@@ -1,0 +1,7 @@
+
+---
+applications:
+- name: birthday
+  memory: 512M
+  instances: 1
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack

@@ -1,7 +1,7 @@
 // A very basic web server in node.js
 // Stolen from: Node.js for Front-End Developers by Garann Means (p. 9-10)
 
-var port = 8000;
+var port = 8080;
 var serverUrl = "127.0.0.1";
 
 var http = require("http");
@@ -14,8 +14,13 @@ console.log("Starting web server at " + serverUrl + ":" + port);
 http.createServer( function(req, res) {
 
 	var now = new Date();
+	var filename;
 
-	var filename = req.url || "index.html";
+	if(req.url === "/") {
+		filename = "/index.html";
+	}
+	else filename = req.url;
+	console.log("filename = "+filename);
 	var ext = path.extname(filename);
 	var localPath = __dirname;
 	var validExtensions = {
@@ -27,7 +32,8 @@ http.createServer( function(req, res) {
 		".gif": "image/gif",
 		".png": "image/png",
         ".less":"application/less",
-        ".mp3":"audio/mp3"
+        ".mp3":"audio/mp3",
+		"ico": "image/ico"
 	};
 
 	var validMimeType = true;
@@ -53,7 +59,7 @@ http.createServer( function(req, res) {
 		console.log("Invalid file extension detected: " + ext + " (" + filename + ")")
 	}
 
-}).listen(port, serverUrl);
+}).listen( process.env.PORT || port);
 
 function getFile(localPath, res, mimeType) {
 	fs.readFile(localPath, function(err, contents) {
